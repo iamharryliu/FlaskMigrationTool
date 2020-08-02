@@ -6,12 +6,17 @@ import random
 now = datetime.now()
 
 
+def add_data_to_db(db):
+    add_users_to_db(db)
+
+
 def get_users():
     users = []
     for _ in range(100):
         user = create_user()
         users.append(user)
     return users
+    db.session.commit()
 
 
 def create_user():
@@ -49,4 +54,3 @@ def add_users_to_db(db):
             signup_date=user["signup_date"],
         )
         db.session.add(user)
-    db.session.commit()

@@ -1,6 +1,6 @@
-import time
 from WebApp import create_app, db
-from mock_utils import add_users_to_db
+from mock_utils import add_data_to_db
+import time
 
 
 def main():
@@ -10,7 +10,7 @@ def main():
     ctx.push()
     db.drop_all()
     db.create_all()
-    add_users_to_db(db)
+    add_data_to_db(db)
     print(f"DB setup in {time.time() - t0}s")
 
 
