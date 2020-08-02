@@ -37,6 +37,7 @@ def create_user():
 
 
 def add_users_to_db(db):
+    print("adding users to db")
     users = get_users()
     for user in users:
         user = User(

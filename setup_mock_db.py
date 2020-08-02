@@ -10,13 +10,8 @@ def main():
     ctx.push()
     db.drop_all()
     db.create_all()
-    add_users(db)
-    print(f"DB setup in {time.time() - t0}s")
-
-
-def add_users(db):
-    print("adding users to db")
     add_users_to_db(db)
+    print(f"DB setup in {time.time() - t0}s")
 
 
 if __name__ == "__main__":
