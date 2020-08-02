@@ -11,5 +11,6 @@ class Config:
     DEBUG = True
 
     SQLALCHEMY_DATABASE_URI = f"sqlite:///{ROOT_PATH}/site.db"
-    # SQLALCHEMY_DATABASE_URI = "mysql+pymysql://user:password@host/dbname"
+    # SQLALCHEMY_DATABASE_URI = "mysql+pymysql://username:password@localhost/db_name"
+    # SQLALCHEMY_DATABASE_URI = "postgresql://username:password@localhost/db_name"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
