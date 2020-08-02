@@ -25,13 +25,9 @@ def create_app(config_class=Config):
     def wilcard_redirect(wildcard):
         return redirect("http://localhost:5000/admin")
 
-    from WebApp.models import (
-        User,
-        Transaction,
-    )
+    from WebApp.models import User
 
     admin.init_app(app)
     admin.add_view(ModelView(User, db.session))
-    admin.add_view(ModelView(Transaction, db.session))
 
     return app

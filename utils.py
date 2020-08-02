@@ -1,63 +1,51 @@
+from WebApp.models import User
+from mock_data import names
 from datetime import datetime, timedelta
 import random
-from mock_data.transactions import (
-    clothing_transactions,
-    food_transactions,
-    drink_transactions,
-)
-from WebApp.models import User, Transaction
+
+now = datetime.now()
+
+
+def get_users():
+    users = []
+    for _ in range(2000):
+        user = create_user()
+        users.append(user)
+    return users
+
+
+def create_user():
+    first_name = random.choice(names)
+    last_name = random.choice(names)
+    phone_number = f"{random.randint(100, 999)}-555-{random.randint(1000,9999)}"
+    email = f"{first_name.lower()}_{last_name.lower()}@bogusemail.com"
+    birth_date = datetime(
+        random.randint(2017, now.year), random.randint(1, 12), random.randint(1, 28)
+    )
+    signup_date = datetime(
+        random.randint(2017, now.year), random.randint(1, 12), random.randint(1, 28)
+    )
+    user = {
+        "first_name": first_name,
+        "last_name": last_name,
+        "phone_number": phone_number,
+        "email": email,
+        "birth_date": birth_date,
+        "signup_date": signup_date,
+    }
+    return user
 
 
 def add_users_to_db(db):
-    for i in range(100):
-        user = User(name=f"User {i+1}")
+    users = get_users()
+    for user in users:
+        user = User(
+            first_name=user["first_name"],
+            last_name=user["last_name"],
+            phone_number=user["phone_number"],
+            email=user["email"],
+            birth_date=user["birth_date"],
+            signup_date=user["signup_date"],
+        )
         db.session.add(user)
     db.session.commit()
-
-
-def add_transactions_to_db(db):
-    total = 0
-    for i in range(User.query.count()):
-        transactions = get_user_transactions()
-        total += len(transactions)
-        for transaction in transactions:
-            db.session.add(
-                Transaction(
-                    owner=User.query.get(i + 1),
-                    amount=transaction["amount"],
-                    timestamp=transaction["timestamp"],
-                    merchant_name=transaction["merchant_name"],
-                    category=transaction["category"],
-                )
-            )
-    db.session.commit()
-
-
-def get_user_transactions(days=30):
-    now_dt = datetime.now()
-    dt = datetime.now() - timedelta(days=days)
-    transactions = []
-    while dt < now_dt.now():
-        dt = dt + timedelta(days=1)
-        bought_lunch = random.randint(0, 2)
-        if bought_lunch:
-            transaction = dict(random.choice(food_transactions["fast-food"]))
-            transaction["timestamp"] = dt
-            transactions.append(transaction)
-        ate_out_for_dinner = not random.randint(0, 5)
-        if ate_out_for_dinner:
-            ate_fast_food = random.randint(0, 1)
-            if ate_fast_food:
-                transaction = dict(random.choice(food_transactions["fast-food"]))
-                transaction["timestamp"] = dt
-                transactions.append(transaction)
-            else:
-                transaction = dict(random.choice(food_transactions["dining"]))
-                transaction["timestamp"] = dt
-                transactions.append(transaction)
-        bought_clothes = not random.randint(0, 30)
-        if bought_clothes:
-            transaction = dict(random.choice(clothing_transactions))
-            transaction["timestamp"] = dt
-            transactions.append(transaction)
-    return transactions
