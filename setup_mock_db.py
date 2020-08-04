@@ -11,7 +11,7 @@ def main():
     db.drop_all()
     db.create_all()
     add_data_to_db(db)
-    print(f"DB setup in {time.time() - t0}s")
+    print(f"DB setup in {time.time() - t0:.0f}s")
 
 
 if __name__ == "__main__":
