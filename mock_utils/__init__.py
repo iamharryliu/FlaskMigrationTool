@@ -10,13 +10,28 @@ def add_data_to_db(db):
     add_users_to_db(db)
 
 
+def add_users_to_db(db):
+    print("adding users to db")
+    users = get_users()
+    for user in users:
+        user = User(
+            first_name=user["first_name"],
+            last_name=user["last_name"],
+            phone_number=user["phone_number"],
+            email=user["email"],
+            birth_date=user["birth_date"],
+            signup_date=user["signup_date"],
+        )
+        db.session.add(user)
+    db.session.commit()
+
+
 def get_users():
     users = []
     for _ in range(100):
         user = create_user()
         users.append(user)
     return users
-    db.session.commit()
 
 
 def create_user():
@@ -40,17 +55,3 @@ def create_user():
     }
     return user
 
-
-def add_users_to_db(db):
-    print("adding users to db")
-    users = get_users()
-    for user in users:
-        user = User(
-            first_name=user["first_name"],
-            last_name=user["last_name"],
-            phone_number=user["phone_number"],
-            email=user["email"],
-            birth_date=user["birth_date"],
-            signup_date=user["signup_date"],
-        )
-        db.session.add(user)
